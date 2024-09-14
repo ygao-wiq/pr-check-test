@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
       - name: Run pre-commit checks
         run: |
@@ -17,6 +17,7 @@ jobs:
           echo Head: ${ENV_GITHUB_HEAD_REPO}:${ENV_GITHUB_SOURCE_REF}
           echo Dummy: ${ENV_GITHUB_BASE_CLONE_URL}
           echo Dummy: ${ENV_GITHUB_BASE_REFS_URL}
+          echo ${ENV_GITHUB_ACTING_USER
         env:
           ENV_GITHUB_SOURCE_REF: ${{ github.event.pull_request.head.ref }}
           ENV_GITHUB_TARGET_REF: origin/${{ github.event.pull_request.base.ref }}
