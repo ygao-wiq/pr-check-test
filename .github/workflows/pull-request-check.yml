@@ -15,9 +15,13 @@ jobs:
         run: |
           echo Base: ${ENV_GITHUB_BASE_REPO}:${ENV_GITHUB_TARGET_REF}
           echo Head: ${ENV_GITHUB_HEAD_REPO}:${ENV_GITHUB_SOURCE_REF}
+          echo Dummy: ${ENV_GITHUB_BASE_CLONE_URL}
+          echo Dummy: ${ENV_GITHUB_BASE_REFS_URL}
         env:
           ENV_GITHUB_SOURCE_REF: ${{ github.event.pull_request.head.ref }}
           ENV_GITHUB_TARGET_REF: origin/${{ github.event.pull_request.base.ref }}
           ENV_GITHUB_ACTING_USER: ${{ github.actor }}
-          ENV_GITHUB_HEAD_REPO: ${{ github.event.pull_request.head.repo }}
-          ENV_GITHUB_BASE_REPO: ${{ github.event.pull_request.base.repo }}
+          ENV_GITHUB_HEAD_REPO: ${{ github.event.pull_request.head.repo.git_url }}
+          ENV_GITHUB_BASE_REPO: ${{ github.event.pull_request.base.repo.git_url }}
+          ENV_GITHUB_BASE_CLONE_URL: ${{ github.event.pull_request.base.repo.clone_url }}
+          ENV_GITHUB_BASE_REFS_URL: ${{ github.event.pull_request.base.repo.git_refs_url }}
