@@ -25,3 +25,12 @@ jobs:
           ENV_GITHUB_BASE_REPO: ${{ github.event.pull_request.base.repo.git_url }}
           ENV_GITHUB_BASE_CLONE_URL: ${{ github.event.pull_request.base.repo.clone_url }}
           ENV_GITHUB_BASE_REFS_URL: ${{ github.event.pull_request.base.repo.git_refs_url }}
+      - name: Check write-protection files in the pull request
+        id: check-protected-files
+        uses: maxshine/personal-continuous-integrations@admin-role
+        with:
+          acting-user: ${{ github.actor }}
+          merge-ref: origin/${{ github.event.pull_request.base.ref }}
+          head-ref: ${{ github.event.pull_request.head.ref }}
+          include-filter: '^.github/.*$'
+          forked-repository-url: ${{ github.event.pull_request.base.repo.clone_url }}
