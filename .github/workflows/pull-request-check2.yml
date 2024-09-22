@@ -27,4 +27,4 @@ jobs:
           head-ref: ${{ github.event.pull_request.head.sha }}
           include-filter: '^ci/.*$|^.github/.*$|^\.pre-commit-config.yaml$'
           github-access-token: ${{ steps.app-token.outputs.token }}
-          github-repository-name: woolworthslimited/pde-dbt-customizables
+          github-repository-name: ygao-wiq/pr-check-test
