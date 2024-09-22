@@ -28,7 +28,7 @@ jobs:
           ENV_GITHUB_BASE_REFS_URL: ${{ github.event.pull_request.base.repo.git_refs_url }}
       - name: Check write-protection files in the pull request
         id: check-protected-files
-        uses: maxshine/personal-continuous-integrations@admin-role
+        uses: maxshine/personal-continuous-integrations/.github/actions/write-protection-docker-action@v1.1.0
         with:
           acting-user: ${{ github.actor }}
           merge-ref: origin/${{ github.event.pull_request.base.ref }}
