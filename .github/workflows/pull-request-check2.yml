@@ -1,0 +1,46 @@
+on:
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  pull_reuqest_checks:
+    permissions: read-all
+    runs-on: ubuntu-latest
+    name: A job to check the pull request
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: 896787
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: 'ygao-wiq'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version:  3.11
+      - name: Setup Dependencies
+        run: |
+          pip -V 
+          pip install poetry
+          poetry install --no-root
+      - name: Run pre-commit checks
+        run: |
+          poetry run pre-commit run github-write-protection-pr --all-files
+        env:
+          ENV_GITHUB_SOURCE_REF: ${{ github.event.pull_request.head.sha }}
+          ENV_GITHUB_TARGET_REF: origin/${{ github.event.pull_request.base.ref }}
+          ENV_GITHUB_ACTING_USER: ${{ github.actor }}
+      - name: Check write-protection files in the pull request
+        id: check-protected-files
+        uses: maxshine/personal-continuous-integrations@admin-role
+        with:
+          acting-user: ${{ github.actor }}
+          merge-ref: origin/${{ github.event.pull_request.base.ref }}
+          head-ref: ${{ github.event.pull_request.head.sha }}
+          include-filter: '^ci/.*$|^.github/.*$|^\.pre-commit-config.yaml$'
+          github-access-token: ${{ steps.app-token.outputs.token }}
+          github-repository-name: woolworthslimited/pde-dbt-customizables
