@@ -35,3 +35,6 @@ jobs:
           head-ref: ${{ github.event.pull_request.head.ref }}
           include-filter: '^.github/.*$'
           forked-repository-url: ${{ github.event.pull_request.head.repo.clone_url }}
+          github-access-token: ${{ secrets.GITHUB_TOKEN }}
+          github-repository-name: ygao-wiq/pr-check-test
+
